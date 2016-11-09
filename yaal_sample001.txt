@@ -1,0 +1,8 @@
+//Code sample
+
+rule admin_rule 
+  evaluate if
+  user.id = "admin"
+  or
+  user.groups contains "admin"
+  action PERMIT

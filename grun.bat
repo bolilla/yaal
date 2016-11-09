@@ -1,0 +1,1 @@
+java -cp . org.antlr.v4.gui.TestRig %*
