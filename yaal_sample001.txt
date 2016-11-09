@@ -1,8 +1,11 @@
 //Code sample
 
-rule admin_rule 
-  evaluate if
-  user.id = "admin"
-  or
-  user.groups contains "admin"
-  action PERMIT
+rules myrules 
+	is evaluated as xxx 
+	is composed by 
+	rule a is 
+		precondition 1=1 
+		condition 1=1 
+		action PERMIT 
+	rule end 
+rule_set end
