@@ -1,1 +1,0 @@
-java -cp . org.antlr.v4.Tool %*
