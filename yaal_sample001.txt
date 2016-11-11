@@ -1,8 +1,12 @@
-rule_set myrules (aA_a) :
-	rule a is 
-		precondition 1=1 
-		condition 1=1 
-		action PERMIT 
-	rule end 
-rule_set end
- 
+policy myPol (Permit-overrides) begin
+  rule OneRule begin
+    action DENY
+    target 37 != 32
+    condition "string1" = "string2"
+  end
+  rule AnotherRule begin
+    action PERMIT
+    target TRUE
+    condition TRUE
+  end
+end
