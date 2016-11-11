@@ -1,91 +1,130 @@
 /**
  * YAAL Grammar
  */
-grammar yaal;
+ grammar yaal;
 
-rule_set
-:
-	'rules' ID 'is' 'evaluated as' combining_algorithm 'is composed by' ruledesc*
-	'rule_set end'
-;
+ /**There is only one policy, which is composed by one or more rules*/
+ policy
+ :
+ 	'policy' ID
+ 	(
+ 		'(' combining_algo ')'
+ 	)? 'begin' pol_rule+ 'end'
+ ;
 
-combining_algorithm
-:
-	'Deny-overrides'
-	| 'Permit-overrides'
-	| 'First-applicable'
-	| 'Only-one-applicable'
-	| ID
-;
+ /**How to decide which rule to apply*/
+ combining_algo
+ :
+ 	'Deny-overrides'
+ 	| 'Permit-overrides'
+ 	| 'First-applicable' //Default Value
 
-ruledesc
-:
-	'rule' ID 'is' 'precondition' condition 'condition' condition 'action'
-	action_id 'rule end'
-;
+ 	| 'Only-one-applicable'
+ 	| 'Custom-combining-algorithm' ':' ID //In case of using a non-standard algorithm
 
-condition
-:
-	'not' condition
-	| condition '&' condition
-	| condition '|' condition
-	| arit_val arit_comp arit_val
-	| str_val str_op str_val
-	| bool_val
-;
+ ;
 
-action_id
-:
-	'PERMIT'
-	| 'DENY'
-;
+ /** One rule of the policy. action is PERMIT by default*/
+ pol_rule
+ :
+ 	'rule' ID 'begin'
+ 	(
+ 		'action' action_id
+ 	)? 'target' condition 'condition' condition 'end'
+ ;
 
-arit_val
-:
-	NUM
-	| categ_attr
-;
+ condition
+ :
+ 	'not' condition
+ 	| condition bool_op condition
+ 	| condition bool_comp condition
+ 	| arit_val arit_comp arit_val
+ 	| str_val str_comp str_val
+ 	| bool_val
+ ;
 
-arit_comp
-:
-	'='
-	| '<>'
-;
+ action_id
+ :
+ 	'PERMIT'
+ 	| 'DENY'
+ ;
 
-bool_val
-:
-	'TRUE'
-	| 'FALSE'
-;
+ bool_op
+ :
+ 	'&'
+ 	| '|'
+ ;
 
-categ_attr
-:
-	ID '.' ID
-;
+ bool_comp
+ :
+ 	'='
+ 	| '!='
+ ;
 
-str_val
-:
-	categ_attr
-	| '[a-z]'+
-;
+ arit_val
+ :
+ 	NUM
+ 	| categ_attr
+ ;
 
-str_op
-:
-	'='
-	| '<>'
-;
+ arit_comp
+ :
+ 	'='
+ 	| '!='
+ 	| '<'
+ 	| '>'
+ 	| '>='
+ 	| '<='
+ ;
 
-ID
-:
-	[a-z]+
-;
+ bool_val
+ :
+ 	'TRUE'
+ 	| 'FALSE'
+ ;
 
-NUM
-:
-	[0-9]+
-;
+ categ_attr
+ :
+ 	ID '.' ID
+ ;
 
-WS
-:
-	[ \t\r\n]+ -> skip
-;
+ str_val
+ :
+ 	categ_attr
+ 	| '"' '"'
+ 	| '[a-z]'+
+ ;
+ 
+ str_comp
+ :
+ 	'='
+ 	| '<>'
+ ;
+
+ ID
+ :
+ 	LETTER
+ 	(
+ 		LETTER
+ 		| NUM
+ 		| '_'
+ 	)*
+ ;
+
+ LETTER
+ :
+ 	(
+ 		[a-z]
+ 		| [A-Z]
+ 	)
+ ;
+
+ NUM
+ :
+ 	[0-9]+
+ ;
+
+ WS
+ :
+ 	[ \t\r\n]+ -> skip
+ ;

@@ -1,11 +1,8 @@
-//Code sample
-
-rules myrules 
-	is evaluated as xxx 
-	is composed by 
+rule_set myrules (aA_a) :
 	rule a is 
 		precondition 1=1 
 		condition 1=1 
 		action PERMIT 
 	rule end 
 rule_set end
+ 
