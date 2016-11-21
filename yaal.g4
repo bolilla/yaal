@@ -16,9 +16,13 @@
  combining_algo
  :
  	'Deny-overrides'
- 	| 'Permit-overrides'
- 	| 'First-applicable' //Default Value
+ 	| 'Ordered-deny-overrides' //Default value
 
+ 	| 'Permit-overrides'
+ 	| 'Ordered-permit-overrides'
+ 	| 'Deny-unless-permit'
+ 	| 'Permit-unless-deny'
+ 	| 'First-applicable'
  	| 'Only-one-applicable'
  	| 'Custom-combining-algorithm' ':' ID //In case of using a non-standard algorithm
 
@@ -32,7 +36,10 @@
  		'action' action_id
  	)? 'target' condition 'condition' condition 'end'
  ;
-
+ 
+ /** This applies to target and condition indistinctly. This is valid to use YAAL as an 
+  * understanding tool, but it does not suffice (not easily at least) to generate XACML code
+  */
  condition
  :
  	'not' condition
