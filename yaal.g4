@@ -31,10 +31,7 @@
  /** One rule of the policy. action is PERMIT by default. Target and condition are optional*/
  pol_rule
  :
- 	'rule' ID 'begin'
- 	(
- 		'action' action_id
- 	)?
+ 	'rule' ID ('('action_id')')?'begin'
  	(
  		'target' condition
  	)?
