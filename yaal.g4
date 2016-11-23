@@ -28,17 +28,23 @@
 
  ;
 
- /** One rule of the policy. action is PERMIT by default*/
+ /** One rule of the policy. action is PERMIT by default. Target and condition are optional*/
  pol_rule
  :
  	'rule' ID 'begin'
  	(
  		'action' action_id
- 	)? 'target' condition 'condition' condition 'end'
+ 	)?
+ 	(
+ 		'target' condition
+ 	)?
+ 	(
+ 		'condition' condition
+ 	)? 'end'
  ;
- 
- /** This applies to target and condition indistinctly. This is valid to use YAAL as an 
-  * understanding tool, but it does not suffice (not easily at least) to generate XACML code
+
+ /** This applies to target and condition indistinctly. This is valid if you use YAAL as an 
+  * understanding tool, but it does not suffice to generate XACML code
   */
  condition
  :
@@ -50,30 +56,35 @@
  	| bool_val
  ;
 
+ /** Possible actions to be defined */
  action_id
  :
  	'PERMIT'
  	| 'DENY'
  ;
 
+ /** Boolean operations */
  bool_op
  :
  	'&'
  	| '|'
  ;
 
+ /** Boolean comparators */
  bool_comp
  :
  	'='
  	| '!='
  ;
 
+ /** Arithmetic values */
  arit_val
  :
  	NUM
  	| categ_attr
  ;
 
+ /** Arithmetic comparators */
  arit_comp
  :
  	'='
@@ -84,29 +95,34 @@
  	| '<='
  ;
 
+ /** Boolean values */
  bool_val
  :
  	'TRUE'
  	| 'FALSE'
  ;
 
+ /** Attribute associated to a category */
  categ_attr
  :
  	ID '.' ID
  ;
 
+ /** String value */
  str_val
  :
  	categ_attr
  	| STRING
  ;
 
+ /** String comparator */
  str_comp
  :
  	'='
  	| '<>'
  ;
 
+ /** Identifier */
  ID
  :
  	LETTER
@@ -117,6 +133,7 @@
  	)*
  ;
 
+ /** Upper or lower case letter */
  LETTER
  :
  	(
@@ -125,16 +142,19 @@
  	)
  ;
 
+ /** Number (base ten) */
  NUM
  :
  	[0-9]+
  ;
 
+ /** White Space */
  WS
  :
  	[ \t\r\n]+ -> skip
  ;
 
+ /** String */
  STRING
  :
  	'"'
@@ -144,6 +164,7 @@
  	)* '"'
  ;
 
+ /** Scape characters */
  ESC
  :
  	'\\"'
