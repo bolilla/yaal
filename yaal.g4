@@ -170,3 +170,9 @@
  	'\\"'
  	| '\\\\'
  ;
+
+ /** Sections to ignore */
+ Comment
+ :
+ 	'#' ~( '\r' | '\n' )*
+ ;
