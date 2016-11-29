@@ -52,7 +52,8 @@
   */
  condition
  :
- 	'not' condition
+ 	'(' condition ')'
+ 	| 'not' condition
  	| condition bool_op condition
  	| condition bool_comp condition
  	| arit_val arit_comp arit_val
