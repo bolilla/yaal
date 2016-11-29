@@ -85,8 +85,23 @@
  /** Arithmetic values */
  arit_val
  :
- 	NUM
+ 	'(' arit_val ')'
+ 	| NUM
  	| categ_attr
+ 	| arit_val arit_op arit_val
+ ;
+
+ /** Arithmetic operator */
+ arit_op
+ :
+ 	(
+ 		'+'
+ 		| '-'
+ 		| '^'
+ 		| '*'
+ 		| '/'
+ 		| '%'
+ 	)
  ;
 
  /** Arithmetic comparators */
