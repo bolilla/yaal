@@ -36,6 +36,8 @@ The following is the language model of YAAL:
 
 This means there is only one _Policy Set_, with just one _Policy_, which may have many rules.
 
+YAAL does not define the way attributes are retrieved.
+
 ## Examples
 
 TO-DO
@@ -46,6 +48,10 @@ Even when there may be many other limitations I am not aware of , I can state fo
 
 - **There is no proper YAAL compiler to create an executable authorization policy**: The language model is a subset of XACML, which means any policy written in YAAL can be translated into XACML, but I have not had the time (or will) to implement it.
 - **The definition of the _target_ component of the policies is treated in the same way as a _condition_**: This means there is some work to be done regarding the transformation of a _target_ defined in YAAL into a _target_ defined into XACML. May be there is some of the _target_ that has to be transcribed into the _condition_ of the policy.
+- **Explanation for conditions**: A definition of condition components that are repeated. e.g. define "administrator" as "user.id = 'admin' OR user.group = 'admin'".
+- **Obligations**: Add some means to put answers (PERMIT or DENY) into context by adding obligations as described by XACML. e.g. user cannot perform action (DENY result) unless she agrees to the terms of the service (obligation).
+- **Advices**: Add some means to put answers (PERMIT or DENY) into context by adding advises as described by XACML. e.g. user can perform the operation (PERMIT result), but please label this operation as "suspicious" (if the operation cannot be labeled, the operation is permitted anyway).
+- **Query (or command) transformations**: One very interesting piece of information that can be returned to the PEP regards the manipulation of the parameters of the operation to be done. e.g. reduce the scope of an hypothetical sql query by transforming `select * from users` into `select * from (select * from users where department = user.department)`.
 
 ## Alternatives to YAAL
 
