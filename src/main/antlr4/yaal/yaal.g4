@@ -3,6 +3,10 @@
  */
  grammar yaal;
 
+ options {
+ 	language = Java;
+ }
+
  /**There is only one policy, which is composed by one or more rules*/
  policy
  :
@@ -31,7 +35,10 @@
  /** One rule of the policy. action is PERMIT by default. Target and condition are optional*/
  pol_rule
  :
- 	'rule' ID ('('action_id')')?'begin'
+ 	'rule' ID
+ 	(
+ 		'(' action_id ')'
+ 	)? 'begin'
  	(
  		'target' condition
  	)?
@@ -171,5 +178,5 @@
  /** Sections to ignore */
  Comment
  :
- 	'#' ~( '\r' | '\n' )*
+ 	'#' ~( '\r' | '\n' )* -> skip
  ;

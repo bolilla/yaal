@@ -1,0 +1,11 @@
+
+# Example extracted from: Guide to Attribute Based Access Control (ABAC) Definition and Considerations
+# All Nurse Practitioners in the Cardiology Department can View the Medical Records of Heart Patients
+
+policy Example_nist_800_162 begin
+  rule NursesInCardiologyCanReadRecordsOfHeartPatients (PERMIT) begin
+    condition subject.role = "Nurse" & subject.department = "Cardiology" &
+    action.action_id = "View" &
+    resource.type ="MedicalRecord" & resource.patientDepartment = "Cardiology"
+  end 
+end
