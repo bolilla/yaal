@@ -38,9 +38,27 @@ This means there is only one _Policy Set_, with just one _Policy_, which may hav
 
 YAAL does not define the way attributes are retrieved.
 
-## Examples
+## Example
 
-TO-DO
+```
+# Example extracted from: Guide to Attribute Based Access Control (ABAC) Definition and Considerations
+# All Nurse Practitioners in the Cardiology Department can View the Medical Records of Heart Patients
+
+policy Example begin
+  rule CardiologyNurses (PERMIT) begin
+    condition 
+    
+      subject.role = "Nurse"
+      AND subject.department = "Cardiology"
+      
+      AND action.action_id = "View"
+      
+      AND resource.type ="MedicalRecord"
+      AND resource.patientDepartment = "Cardiology"
+      
+  end 
+end
+```
 
 ## Limitations (a.k.a roadmap)
 
