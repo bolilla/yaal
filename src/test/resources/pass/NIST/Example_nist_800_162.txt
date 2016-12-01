@@ -4,8 +4,8 @@
 
 policy Example_nist_800_162 begin
   rule NursesInCardiologyCanReadRecordsOfHeartPatients (PERMIT) begin
-    condition subject.role = "Nurse" & subject.department = "Cardiology" &
-    action.action_id = "View" &
-    resource.type ="MedicalRecord" & resource.patientDepartment = "Cardiology"
+    condition subject.role = "Nurse" AND subject.department = "Cardiology" AND
+    action.action_id = "View" AND
+    resource.type ="MedicalRecord" AND resource.patientDepartment = "Cardiology"
   end 
 end

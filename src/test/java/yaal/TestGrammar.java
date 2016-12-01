@@ -1,8 +1,8 @@
 package yaal;
 
 import static java.nio.file.FileVisitResult.CONTINUE;
-import static org.junit.Assert.fail;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -13,8 +13,12 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
+import org.antlr.v4.runtime.ANTLRErrorStrategy;
+import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.DefaultErrorStrategy;
 import org.antlr.v4.runtime.TokenStream;
 import org.junit.Test;
 
@@ -73,9 +77,10 @@ public class TestGrammar {
 		@Override
 		public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
 			if (attr.isRegularFile()) {
-				String readableExpectation = expectedResult?"PASS":"FAIL";
+				String readableExpectation = expectedResult ? "PASS" : "FAIL";
 				System.out.format("Test: \"%s\" (expected result: %s)%n", file, readableExpectation);
-				if (checkGrammarOfFile(file) != expectedResult) {
+				if (checkGrammarOfFile(file, new BailErrorStrategy()) != expectedResult) {
+					checkGrammarOfFile(file, new DefaultErrorStrategy()); //Just to print the errors
 					anyError = true;
 				}
 			} else {
@@ -90,15 +95,18 @@ public class TestGrammar {
 		 * 
 		 * @param file
 		 *            file to check
+		 * @param errorStrategy
+		 *            BailErrorStrategy to test the grammar,
+		 *            DefaultErrorStrategy to print the errors
 		 * @return true iff the contents of the file match the grammar
 		 */
-		private boolean checkGrammarOfFile(Path file) {
-			String expression;
+		private boolean checkGrammarOfFile(Path file, ANTLRErrorStrategy errorStrategy) {
 			try {
-				expression = new String(Files.readAllBytes(file), "UTF-8");
-				ANTLRInputStream input = new ANTLRInputStream(expression);
-				TokenStream tokens = new CommonTokenStream(new yaalLexer(input));
+				ANTLRInputStream input = new ANTLRFileStream(file.toString());
+				yaalLexer lexer = new yaalLexer(input);
+				TokenStream tokens = new CommonTokenStream(lexer);
 				yaalParser parser = new yaalParser(tokens);
+				parser.setErrorHandler(errorStrategy);
 				PolicyContext ret = parser.policy();
 				return ret.exception == null;
 			} catch (Exception e) {

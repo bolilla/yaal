@@ -71,8 +71,8 @@
  /** Boolean operations */
  bool_op
  :
- 	' AND '
- 	| ' OR '
+ 	'AND'
+ 	| 'OR'
  ;
 
  /** Boolean comparators */
