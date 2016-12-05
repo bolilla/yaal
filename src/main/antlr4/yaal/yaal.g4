@@ -43,7 +43,7 @@
  		'target' condition
  	)?
  	(
- 		'condition' condition
+ 		condition
  	)? 'end'
  ;
 

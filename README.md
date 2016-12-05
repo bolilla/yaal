@@ -46,7 +46,6 @@ YAAL does not define the way attributes are retrieved.
 
 policy Example begin
   rule CardiologyNurses (PERMIT) begin
-    condition 
     
       subject.role = "Nurse"
       AND subject.department = "Cardiology"
